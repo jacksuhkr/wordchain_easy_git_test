@@ -9,6 +9,10 @@ public class Weight {
 	public static final float[] weights2 = new float[Words.NUM_OF_WORDS]; 
 	public static final float[] weights3 = new float[Words.NUM_OF_WORDS]; 
 	
+	//자체학습을 위한 단어장
+	private static String selfWeightFile = "data_files/selfWeight.txt";
+	public static final float[] selfWeights = new float[Words.NUM_OF_WORDS]; 
+	
 	public static void getWeights1() {
 		FileReader.getWeights(weightFile1, weights1);
 	}
@@ -19,5 +23,9 @@ public class Weight {
 
 	public static void getWeights3() {
 		FileReader.getWeights(weightFile3, weights3);
+	}
+	
+	public static void getSelfWeights() {
+		FileReader.getWeights(selfWeightFile, selfWeights);
 	}
 }

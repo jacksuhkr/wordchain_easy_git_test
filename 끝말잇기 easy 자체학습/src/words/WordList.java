@@ -15,6 +15,10 @@ public class WordList {
 		ArrayList<TreeSet<WordVector>> trainedWords2 = new ArrayList<TreeSet<WordVector>>();
 	public static
 		ArrayList<TreeSet<WordVector>> trainedWords3 = new ArrayList<TreeSet<WordVector>>();
+	
+	// 자체학습 단어장
+	public static
+		ArrayList<TreeSet<WordVector>> selfTrainedWords = new ArrayList<TreeSet<WordVector>>();
 
 	public static void setWords() { 
 		copyWords(words, Classified.words);
@@ -30,6 +34,11 @@ public class WordList {
 	
 	public static void setTrainedWords3() { 
 		copyWordVectors(trainedWords3, Classified.trainedWords3);
+	}
+	
+	// 자체학습
+	public static void setSelfTrainedWords() { 
+		copyWordVectors(selfTrainedWords, Classified.selfTrainedWords);
 	}
 	
     // 사용한 단어 지우는 메소드
@@ -60,6 +69,14 @@ public class WordList {
 					(String wordUsed, ArrayList<TreeSet<WordVector>> trainedWords) {
 		int firstLetterNum = FirstLetters.getFirstLetterNumber(wordUsed);
 		WordVector vectorToRemove = new WordVector(wordUsed, Maps.weightMap3.get(wordUsed));
+		trainedWords.get(firstLetterNum).remove(vectorToRemove);
+	}
+    
+    // 자체학습
+    public static void removeSelfWordVector
+					(String wordUsed, ArrayList<TreeSet<WordVector>> trainedWords) {
+		int firstLetterNum = FirstLetters.getFirstLetterNumber(wordUsed);
+		WordVector vectorToRemove = new WordVector(wordUsed, Maps.selfWeightMap.get(wordUsed));
 		trainedWords.get(firstLetterNum).remove(vectorToRemove);
 	}
     

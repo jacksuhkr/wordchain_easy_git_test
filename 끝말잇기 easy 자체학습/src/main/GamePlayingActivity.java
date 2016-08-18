@@ -29,13 +29,18 @@ public class GamePlayingActivity {
             	// 첫단어 세팅
             	left = true;					// 처음은 무조건 왼쪽에서 시작하게
             	startingWord = Words.words[i];				//시작단어 선언
-            	System.out.println("\n첫 단어 " + startingWord + ", 게임을 시작합니다");	// 무슨단어 하는지 출력
+            	if(GameSetting.printStartingWord) {
+            		System.out.println("\n첫 단어 " + startingWord + ", 게임을 시작합니다.");	// 무슨단어 하는지 출력
+            	}
             	addMessage(startingWord);										// 첫단어 시작
                 ReplyMessage.replyWord = startingWord;							// 대답도 그걸로 지정
                 
                 // 진행상황 출력
-            	if ((i+1)%100==0) { System.out.println((i+1) + "개 단어 진행됨"); }	// 몇번째 단어 하는지 출력
-            	
+                if (GameSetting.printNumOfWords) {
+                	if ((i+1)%100==0) 
+                	{ System.out.println((i+1) + "개 단어 진행됨"); }	// 몇번째 단어 하는지 출력
+                }
+                
                 // 시작단어가 바뀌었으므로, 게임판수, 게임이긴수 초기화
             	numOfGamesPlayedCounter = 0;								// 게임 판수 초기화
             	numOfGamesWon[i]=0;											// 게임 이긴수 초기화
@@ -83,6 +88,7 @@ public class GamePlayingActivity {
     		WordList.removeWordVector1(ReplyMessage.replyWord, WordList.trainedWords1);
     		WordList.removeWordVector2(ReplyMessage.replyWord, WordList.trainedWords2);
     		WordList.removeWordVector3(ReplyMessage.replyWord, WordList.trainedWords3);
+    		WordList.removeSelfWordVector(ReplyMessage.replyWord, WordList.selfTrainedWords);
     		
         	// 대답 생성
         	addReplyMessage(ReplyMessage.replyWord);        
@@ -130,18 +136,19 @@ public class GamePlayingActivity {
     	WordList.setTrainedWords1();
     	WordList.setTrainedWords2();
     	WordList.setTrainedWords3();
+    	WordList.setSelfTrainedWords();		// 자체학습
     }
     
     // 주고 받는 단어를 프린트하는 메소드
     public void printMessage(boolean left, String message) {
     	// 왼쪽이면 왼쪽에, 오른쪽이면 오른쪽에 프린트
-    	/*
-        if (left) {
-      	System.out.println("[" + message + "]");
-        } else if (!left) {
-        	System.out.println("\t" + "\t" + "\t" + "[" + message + "]");
-        }
-        */
+    	if(GameSetting.printMessages) {
+            if (left) {
+              	System.out.println("[" + message + "]");
+            } else if (!left) {
+                	System.out.println("\t" + "\t" + "\t" + "[" + message + "]");
+            }
+    	}
     }
     
     // sideExchangerOn이면, 오른쪽의 승리 횟수를 세고, 

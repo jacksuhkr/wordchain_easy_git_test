@@ -6,7 +6,6 @@ import java.util.Scanner;
 import data_base.*;
 import main.GamePlayingActivity;
 import static_variables.GameSetting;
-import statistics.StatisticsActivity;
 import statistics.WriteTextFile;
 
 /**
@@ -18,6 +17,9 @@ public class IntroActivity {
     private static boolean gameDone;
     private static long startTime, endTime;
     private static float timeSpent;
+    
+    // 자체학습 반복할 횟수
+    public static int numOfTraining;
     
     // 차례로 - AI, 쉬운 단어장, 킬러, 안전, 노말, 없는 단어 뺌, 마지막단어로 시작
     public static boolean easyAuto[] = { true, true, false, false, false, false, true };		// easyWord Activate
@@ -39,6 +41,11 @@ public class IntroActivity {
         Classified.classifyWeights(WordVectors.wordVectors2, Classified.trainedWords2);
         Classified.classifyWeights(WordVectors.wordVectors3, Classified.trainedWords3);
         
+        // 자체학습 단어장
+        Weight.getSelfWeights();
+        WordVectors.getSelfWordVecteors();
+        Maps.getSelfWeightMap();
+        Classified.classifyWeights(WordVectors.selfWordVectors, Classified.selfTrainedWords);
 
         // 통계량을 보기위한 세팅들
         GameSetting.killerWordsPeriod = 5;          // 킬러단어 주기
@@ -49,7 +56,7 @@ public class IntroActivity {
         	System.out.println("무엇을 하시겠습니까?");
             System.out.println("---------------------------------------------------");
             System.out.println("1. 기존vs기존	2. 학습vs기존	3. 학습vs학습	");
-            System.out.println("4. 트리탐색vs기존	5. 통계 보기	6. 파일 출력	");
+            System.out.println("4. 트리탐색vs기존	5. 자체학습	6. 파일 출력	");
             System.out.println("7. 세팅 바꾸기	8. 끝내기		");
             System.out.println("---------------------------------------------------");
             whatToDo = scanner.nextInt();
@@ -90,9 +97,20 @@ public class IntroActivity {
             }
             
             if(whatToDo==5) {
-            	printTitle("통계량");
+            	printTitle("자체학습");
             	
-            	StatisticsActivity.showStatistics();
+            	GameSetting.leftDataNum = 0;	// 자체학습의 단어장 번호
+            	selectNumOfGames();
+            	
+            	// 반복횟수 정하기
+            	System.out.println();
+	       	   	System.out.println("자체학습을 몇번 반복하실 건가요?");
+	       	   	numOfTraining = scanner.nextInt();	scanner.nextLine();	
+            	for(int i=1; i<=numOfTraining; i++) {
+            		startGame();
+            		writeTrainedWeight();
+            		cloneWeight(i);
+            	}
             }
             if(whatToDo==6) {
             	printTitle("파일출력");
@@ -173,4 +191,22 @@ public class IntroActivity {
         GamePlayingActivity autoPlay = new GamePlayingActivity();
         autoPlay.startGame(easyAuto);
     }
+    
+	// 자체학습을 위한 가중치 텍스트파일 출력
+	private static void writeTrainedWeight() {
+	    try {
+	    	WriteTextFile.writeSelfWeightText("data_files/selfWeight.txt");
+	    } catch (Exception e) {}
+	}
+    
+    // 학습단어장 기록 남기기
+	private static void cloneWeight(int fileNum) {
+		String cloneFileName = 
+				"data_files/output/selfTrainedWeight" + fileNum;
+		try {
+			WriteTextFile.writeText(cloneFileName);
+		} catch (Exception e) {}
+	}
+	
+
 }

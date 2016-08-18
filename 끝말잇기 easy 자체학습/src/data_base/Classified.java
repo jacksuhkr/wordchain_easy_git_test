@@ -15,6 +15,10 @@ public class Classified {
 	public static final
 			ArrayList<TreeSet<WordVector>> trainedWords3 = new ArrayList<TreeSet<WordVector>>();
 	
+	// 자체 학습을 위한 단어장
+	public static final
+		ArrayList<TreeSet<WordVector>> selfTrainedWords = new ArrayList<TreeSet<WordVector>>();
+	
 	// ArrayList<String>을 읽어서 첫글자가 같은 단어들끼리 분류
     public static void classifyWords() {
         // firstLetters.length만큼 ArrayList<ArrayList<String>>에 자리를 만들어놓음, 즉, 초기화

@@ -62,11 +62,23 @@ public class WordFinder {
         		foundWord = SearchGameTree.getMaxValueWord(lastNum);
         	} else if (!leftSide) {
                 foundWord = replyWithRandom(lastNum, WordList.words);
-//        		foundWord = replyWithWinningRate(lastNum, WordList.trainedWords2);
         	} 
         	if(wordListNotEmpty) { return foundWord; }
         }
-
+        
+        // 자체학습
+        if (mode==5) {
+        	// 왼쪽인지 판단하는 진리값. sideExchanger가 켜져있으면 반대로 출력한다.
+        	boolean leftSide = GamePlayingActivity.sideExchanger(GamePlayingActivity.left);
+        	// 기본적으로 왼쪽이 학습 데이터로 하게함, sideExchanger가 켜져있으면, 오른쪽이 학습 데이터로 하게함
+        	if (leftSide) {
+                foundWord = replyWithTrained(lastNum, getTrainedWords(GameSetting.leftDataNum));
+        	} else if (!leftSide) {
+                foundWord = replyWithRandom(lastNum, WordList.words);
+        	} 
+        	if(wordListNotEmpty) { return foundWord; }
+        }
+        
         /* 단어를 찾지 못한 경우 */
             GamePlayingActivity.turnCounter=0;                // 게임이 끝났음을 표시
             return "이을 단어가 없네요. 제가 졌어요";
@@ -129,6 +141,7 @@ public class WordFinder {
     // 사용할 학습 단어장 선택
     public static ArrayList<TreeSet<WordVector>> getTrainedWords(int listNum) {
     	switch(listNum) {
+    		case 0: return WordList.selfTrainedWords;
 			case 1: return WordList.trainedWords1;
 			case 2: return WordList.trainedWords2;
 			case 3: return WordList.trainedWords3;
