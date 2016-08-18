@@ -107,6 +107,7 @@ public class IntroActivity {
 	       	   	System.out.println("자체학습을 몇번 반복하실 건가요?");
 	       	   	numOfTraining = scanner.nextInt();	scanner.nextLine();	
             	for(int i=1; i<=numOfTraining; i++) {
+            		System.out.println("\n\n" + i + "번째 자체학습 시작합니다");
             		startGame();
             		writeTrainedWeight();
             		cloneWeight(i);
@@ -202,7 +203,7 @@ public class IntroActivity {
     // 학습단어장 기록 남기기
 	private static void cloneWeight(int fileNum) {
 		String cloneFileName = 
-				"data_files/output/selfTrainedWeight" + fileNum;
+				"data_files/output/selfTrainedWeight" + fileNum + ".txt";
 		try {
 			WriteTextFile.writeText(cloneFileName);
 		} catch (Exception e) {}
