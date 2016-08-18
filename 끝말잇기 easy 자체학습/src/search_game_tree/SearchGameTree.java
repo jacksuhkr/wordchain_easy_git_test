@@ -1,4 +1,4 @@
-package SearchGameTree;
+package search_game_tree;
 
 import words.WordList;
 import words.WordVector;

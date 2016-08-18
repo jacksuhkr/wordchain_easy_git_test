@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-import SearchGameTree.SearchGameTree;
 import data_base.FirstLetters;
+import search_game_tree.SearchGameTree;
 import static_variables.GameSetting;
 import words.WordList;
 import words.WordVector;
