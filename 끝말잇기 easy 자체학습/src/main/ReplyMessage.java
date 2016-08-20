@@ -1,6 +1,7 @@
 package main;
 
 import intro.IntroActivity;
+import main.Message;
 
 public class ReplyMessage extends Message {
     public static String replyWord;             // static으로 안 하면 사라져서 끝말이었는지 확인할때 에러가뜸
